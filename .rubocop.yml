@@ -1,0 +1,75 @@
+# @see https://github.com/codeclimate/codeclimate-rubocop/issues/187
+# require: rubocop-performance
+
+AllCops:
+  TargetRubyVersion: 2.5
+  Exclude:
+    - db/schema.rb
+
+CaseIndentation:
+  EnforcedStyle: end
+
+CollectionMethods:
+  PreferredMethods:
+    reduce: inject
+    inject: inject
+
+Lambda:
+  Enabled: false
+
+Layout/AlignArguments:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/AlignHash:
+  EnforcedLastArgumentHashStyle: ignore_implicit
+
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+Layout/IndentFirstHashElement:
+  EnforcedStyle: consistent
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/SpaceInLambdaLiteral:
+  EnforcedStyle: require_space
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+
+MethodLength:
+  Max: 24
+
+Metrics/BlockLength:
+  ExcludedMethods: [it, describe, context, feature, freeze, specify, define, renum]
+
+Metrics/LineLength:
+  Max: 120
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Style/BlockDelimiters:
+  IgnoredMethods: [let, let!, subject, lambda, proc, it, expect]
+
+Style/Documentation:
+  Enabled: false
+
+Style/EachWithObject:
+  Enabled: false
+
+TrailingBlankLines:
+  Enabled: false
