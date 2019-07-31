@@ -5,6 +5,7 @@ Shared utils for Studitemp's Ruby projects.
 ## Status
 
 [![TravisCI](https://travis-ci.com/STUDITEMPS/utils.svg?branch=master)](https://travis-ci.com/STUDITEMPS/utils)
+[![codecov](https://codecov.io/gh/STUDITEMPS/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/STUDITEMPS/utils)
 
 ## Installation
 
