@@ -7,6 +7,7 @@ TODO: Delete this and the text above, and describe your gem
 ## Status
 
 [![TravisCI](https://travis-ci.com/STUDITEMPS/utils.svg?branch=master)](https://travis-ci.com/STUDITEMPS/utils)
+[![codecov](https://codecov.io/gh/STUDITEMPS/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/STUDITEMPS/utils)
 
 ## Installation
 
