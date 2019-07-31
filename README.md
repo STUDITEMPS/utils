@@ -2,6 +2,10 @@
 
 Shared utils for Studitemp's Ruby projects.
 
+## Status
+
+[![TravisCI](https://travis-ci.com/STUDITEMPS/utils.svg?branch=master)](https://travis-ci.com/STUDITEMPS/utils)
+
 ## Installation
 
 Add this line to your application's Gemfile:
