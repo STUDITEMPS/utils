@@ -5,4 +5,6 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in studitemps-utils.gemspec
 gemspec
 
+gem 'pry'
 gem 'rubocop'
+gem 'simplecov'

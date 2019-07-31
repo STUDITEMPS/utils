@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['developers@studitemps.de']
 
   spec.summary       = 'Studitemps utils.'
-  spec.description   = 'Different util classes and extensions for Studitemps.'
+  spec.description   = 'Shared utils for Studitemp\'s Ruby projects.'
   spec.homepage      = 'https://tech.studitemps.de'
   spec.license       = 'MIT'
 
@@ -27,6 +27,10 @@ Gem::Specification.new do |spec|
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
+
+  spec.add_runtime_dependency 'dry-core', '~> 0.4'
+  spec.add_runtime_dependency 'dry-equalizer', '~> 0.2.2'
+  spec.add_runtime_dependency 'dry-initializer', '~> 3.0.0'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 10.0'

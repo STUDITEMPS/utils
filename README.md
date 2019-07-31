@@ -1,8 +1,6 @@
 # Studitemps::Utils
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/studitemps/utils`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Shared utils for Studitemp's Ruby projects.
 
 ## Installation
 
@@ -22,7 +20,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### URI
+
+```ruby
+require 'studitemps/utils/uri'
+
+ExampleURI = Studitemps::Utils::URI.build(schema: 'com.example')
+
+ExampleURI.new # => #<ExampleURI 'com.example'>
+
+uri = ExampleURI.new(context: 'billing', resource: 'invoice', id: 'R422342')
+# => #<ExampleURI 'com.example:billing:invoice:R422342'>
+
+uri.to_s # => 'com.example:billing:invoice:R422342'
+
+ExampleURI.build('com.example:billing:invoice:R422342')
+# => #<ExampleURI 'com.example:billing:invoice:R422342'>
+end
+```
 
 ## Development
 
@@ -32,7 +47,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/studitemps-utils.
+Bug reports and pull requests are welcome on GitHub at https://github.com/STUDITEMPS/studitemps-utils.
 
 ## License
 
