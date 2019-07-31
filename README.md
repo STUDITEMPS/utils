@@ -8,6 +8,7 @@ TODO: Delete this and the text above, and describe your gem
 
 [![TravisCI](https://travis-ci.com/STUDITEMPS/utils.svg?branch=master)](https://travis-ci.com/STUDITEMPS/utils)
 [![codecov](https://codecov.io/gh/STUDITEMPS/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/STUDITEMPS/utils)
+[![Depfu](https://badges.depfu.com/badges/e51585798b0326748e63f90a5e382273/overview.svg)](https://depfu.com/github/STUDITEMPS/utils?project_id=8647)
 
 ## Installation
 
