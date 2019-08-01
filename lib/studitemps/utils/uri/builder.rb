@@ -41,13 +41,13 @@ module Studitemps
           klass.const_set('REGEX', regex.freeze)
         end
 
-        def build_initializer(klass)
+        def build_initializer(klass) # rubocop:disable Metrics/AbcSize
           klass.class_eval do
             include Dry::Initializer[undefined: false].define -> {
-              option :schema, optional: false, default: -> { klass.schema }
-              option :context, optional: true, default: -> { klass.context }
-              option :resource, optional: true, default: -> { klass.resource }
-              option :id, optional: true
+              option :schema, proc(&:to_s), optional: false, default: -> { klass.schema }
+              option :context, proc(&:to_s), optional: true, default: -> { klass.context }
+              option :resource, proc(&:to_s), optional: true, default: -> { klass.resource }
+              option :id, proc(&:to_s), optional: true
             }
           end
         end

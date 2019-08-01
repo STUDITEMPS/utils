@@ -95,6 +95,10 @@ module Studitemps
           it { is_expected.to_not eq another_resource.new(id: '<id>') }
           it { is_expected.to_not eq another_context.new(id: '<id>') }
           it { is_expected.to_not eq another_schema.new(id: '<id>') }
+
+          it 'does not matter if `id` is a string or int' do
+            expect(klass.new(id: '42')).to eq klass.new(id: 42)
+          end
         end
 
         context 'class methods' do
