@@ -59,21 +59,3 @@ module Studitemps
     end
   end
 end
-
-
-
-#     def self.from_base64(base64string)
-#       from_string(Base64.strict_decode64(base64string))
-#     end
-
-#     def to_base64
-#       Base64.strict_encode64(to_s)
-#     end
-
-#     def resource_uris
-#       # parts = resource_id.split('/')
-#       # return nil if parts.count.odd?
-
-#       # Hash[*parts]
-#       resource_id.split('/').map { |uri| Studitemps::URI.build(uri) }
-#     end
