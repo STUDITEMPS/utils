@@ -10,8 +10,8 @@ module Studitemps
         #
         # @example
         #   require 'studitemps/utils/uri/extensions/aliases'
-        #   klass = Studitemps::Utils::URI.build(schema: 'com.example')
-        #   uri = klass.new(context: 'billing', resource: 'invoice', id: 42)
+        #   MyURI = Studitemps::Utils::URI.build(schema: 'com.example')
+        #   uri = MyURI.new(context: 'billing', resource: 'invoice', id: 42)
         #
         #   uri.resource_type # => 'invoice'
         #   uri.resource_id # => '42'

@@ -10,11 +10,11 @@ module Studitemps
         #
         # @example
         #   require 'studitemps/utils/uri/extensions/base64'
-        #   klass = Studitemps::Utils::URI.build(schema: 'com.example')
-        #   uri = klass.new(context: 'billing', resource: 'invoice', id: 42)
+        #   MyURI = Studitemps::Utils::URI.build(schema: 'com.example')
+        #   uri = MyURI.new(context: 'billing', resource: 'invoice', id: 42)
         #
         #   uri.to_base64 # => 'Y29tLmV4YW1wbGU6YmlsbGluZzppbnZvaWNlOjQy'
-        #   klass.from_base64('Y29tLmV4YW1wbGU6YmlsbGluZzppbnZvaWNlOjQy') # => #< 'com.example:billing:invoice:42'>
+        #   MyURI.from_base64('Y29tLmV4YW1wbGU6YmlsbGluZzppbnZvaWNlOjQy') # => #<MyURI 'com.example:billing:invoice:42'>
         module Base64Encoding
 
           # Included instance methods.
