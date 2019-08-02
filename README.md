@@ -10,6 +10,7 @@ TODO: Delete this and the text above, and describe your gem
 [![codecov](https://codecov.io/gh/STUDITEMPS/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/STUDITEMPS/utils)
 [![Depfu](https://badges.depfu.com/badges/e51585798b0326748e63f90a5e382273/overview.svg)](https://depfu.com/github/STUDITEMPS/utils?project_id=8647)
 [![Maintainability](https://api.codeclimate.com/v1/badges/1b9ea1edfa6c800175ec/maintainability)](https://codeclimate.com/github/STUDITEMPS/utils/maintainability)
+[![Inline docs](http://inch-ci.org/github/studitemps/utils.svg?branch=master)](http://inch-ci.org/github/studitemps/utils)
 
 ## Installation
 
