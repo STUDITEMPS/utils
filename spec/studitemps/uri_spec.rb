@@ -205,6 +205,7 @@ module Studitemps
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
 
             it { is_expected.to eq 'com.example:billing:invoice:<id>' }
+            it { is_expected.to eql 'com.example:billing:invoice:<id>' }
           end
         end
       end
