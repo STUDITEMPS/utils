@@ -16,7 +16,7 @@ module Studitemps
         #   uri.resource_type # => 'invoice'
         #   uri.resource_id # => '42'
         module Aliases
-          ##
+
           # Included instance methods.
           module InstanceMethods
             extend Dry::Core::Deprecations['URI Aliases']
