@@ -5,6 +5,7 @@ require 'studitemps/utils/uri'
 require 'studitemps/utils/uri/extensions/serialization'
 require 'studitemps/utils/uri/extensions/base64'
 require 'studitemps/utils/uri/extensions/aliases'
+require 'studitemps/utils/uri/extensions/string_equality'
 
 module Studitemps
   module Utils # rubocop:disable Metrics/ModuleLength
@@ -197,6 +198,13 @@ module Studitemps
             specify '#resource_id' do
               expect(uri.resource_id).to eq '<id>'
             end
+          end
+
+          context 'string equality' do
+            subject(:uri) { klass.new(id: '<id>') }
+            let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
+
+            it { is_expected.to eq 'com.example:billing:invoice:<id>' }
           end
         end
       end
