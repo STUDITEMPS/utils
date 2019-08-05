@@ -5,6 +5,12 @@ module Studitemps
     module URI
       # Builds new URI classes.
       class Builder
+        extend Dry::Core::ClassAttributes
+
+        defines :extensions
+
+        extensions []
+
         # Builds a new URI class from the given parameters.
         #
         # @param [String, nil] schema the schema part of the new URI
@@ -22,6 +28,7 @@ module Studitemps
           configure_class(klass, schema, context, resource)
           build_regex(klass)
           build_initializer(klass)
+          run_extensions(klass)
           klass
         end
 
@@ -61,6 +68,10 @@ module Studitemps
               option :id, proc(&:to_s), optional: true
             }
           end
+        end
+
+        def run_extensions(klass)
+          self.class.extensions.each { |extension| extension.call(klass) }
         end
       end
     end
