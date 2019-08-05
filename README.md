@@ -67,7 +67,7 @@ MyBaseURI.dump(uri) # => 'com.example:billing:invoice:R422342'
 MyBaseURI.load('com.example:billing:invoice:R422342') # =>  #<MyBaseURI 'com.example:billing:invoice:R422342'>
 ```
 
-[Available Extensions](lib/studitemps/utils/extensions)
+[Available Extensions](lib/studitemps/utils/uri/extensions)
 
 ## Development
 
