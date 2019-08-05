@@ -6,6 +6,5 @@ require 'studitemps/utils/version'
 module Studitemps
   # Utils namespace
   module Utils
-    class Error < StandardError; end
   end
 end
