@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'base64'
-
 module Studitemps
   module Utils
     module URI
