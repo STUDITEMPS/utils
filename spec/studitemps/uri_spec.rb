@@ -6,6 +6,7 @@ require 'studitemps/utils/uri/extensions/serialization'
 require 'studitemps/utils/uri/extensions/base64'
 require 'studitemps/utils/uri/extensions/aliases'
 require 'studitemps/utils/uri/extensions/string_equality'
+require 'studitemps/utils/uri/extensions/types'
 
 module Studitemps
   module Utils # rubocop:disable Metrics/ModuleLength
@@ -206,6 +207,32 @@ module Studitemps
 
             it { is_expected.to eq 'com.example:billing:invoice:<id>' }
             it { is_expected.to eql 'com.example:billing:invoice:<id>' }
+          end
+
+          context 'types' do
+            let(:uri) { klass.new(id: '<id>') }
+            let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
+
+            describe 'Types Module' do
+              let(:uri_type) { klass::Types::URI }
+              let(:string_type) { klass::Types::String }
+
+              it 'URI' do
+                expect(uri_type[uri]).to eq uri
+                expect(uri_type['com.example:billing:invoice:<id>']).to eq uri
+                expect {
+                  uri_type['something']
+                }.to raise_error ::Studitemps::Utils::URI::Base::InvalidURI
+              end
+
+              it 'String' do
+                expect(string_type[uri]).to eq uri.to_s
+                expect(string_type['com.example:billing:invoice:<id>']).to eq uri.to_s
+                expect {
+                  string_type['something']
+                }.to raise_error ::Studitemps::Utils::URI::Base::InvalidURI
+              end
+            end
           end
         end
       end

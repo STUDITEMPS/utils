@@ -10,6 +10,7 @@ require 'studitemps/utils/uri/extensions/serialization'
 require 'studitemps/utils/uri/extensions/base64'
 require 'studitemps/utils/uri/extensions/aliases'
 require 'studitemps/utils/uri/extensions/string_equality'
+require 'studitemps/utils/uri/extensions/types'
 
 require 'pry'
 Pry.start
