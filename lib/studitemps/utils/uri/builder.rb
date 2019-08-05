@@ -3,7 +3,18 @@
 module Studitemps
   module Utils
     module URI
+      # Builds new URI classes.
       class Builder
+        # Builds a new URI class from the given parameters.
+        #
+        # @param [String, nil] schema the schema part of the new URI
+        # @param [String, nil] context the context part of the new URI
+        # @param [String, nil] resource the resource part of the new URI
+        # @param [String] superclass uri base class
+        # @return [Base] the new URI class
+        #
+        # @note Use {URI.build} instead to create new URI classes
+        # @api private
         def call(schema: nil, context: nil, resource: nil, superclass: ::Studitemps::Utils::URI::Base)
           raise ArgumentError, 'missing schema' if superclass == ::Studitemps::Utils::URI::Base && schema.nil?
 
