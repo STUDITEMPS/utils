@@ -3,6 +3,8 @@
 require 'bundler/setup'
 require 'studitemps/utils'
 
+require 'pry'
+
 require 'simplecov'
 SimpleCov.start
 

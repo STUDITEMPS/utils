@@ -6,5 +6,9 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'codecov', require: false
+gem 'pry'
 gem 'rubocop'
 gem 'simplecov'
+
+# optional dependencies required for extensions
+gem 'dry-types'
