@@ -32,6 +32,39 @@ module Studitemps
             types.const_set 'String', Dry.Types.Constructor(klass) { |value| klass.build(value).to_s }
             klass.const_set 'Types', types
           }
+
+        end
+      end
+
+      class Builder
+        private
+
+        def schema_type(klass)
+          value_type(:schema, klass)
+        end
+
+        def context_type(klass)
+          value_type(:context, klass)
+        end
+
+        def resource_type(klass)
+          enum_type(:resource, klass)
+        end
+
+        def id_type(klass)
+          enum_type(:id, klass)
+        end
+
+        def value_type(value, klass, default: default_type)
+          return default unless klass.send(value)
+
+          Dry.Types::Value(klass.send(value))
+        end
+
+        def enum_type(value, klass, default: default_type)
+          return default unless klass.send(value)
+
+          Dry.Types::Strict::String.enum(*Array(klass.send(value)))
         end
       end
     end

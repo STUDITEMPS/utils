@@ -41,8 +41,8 @@ module Studitemps
       #
       #  ExampleURI.build('com.example:billing:invoice:R422342')
       #  # => #<ExampleURI 'com.example:billing:invoice:R422342'>
-      def build(schema: nil, context: nil, resource: nil, from: Base)
-        Builder.new.call(schema: schema, context: context, resource: resource, superclass: from)
+      def build(schema: nil, context: nil, resource: nil, id: nil, from: Base)
+        Builder.new.call(schema: schema, context: context, resource: resource, id: id, superclass: from)
       end
     end
   end

@@ -14,6 +14,7 @@ module Studitemps
         defines :schema
         defines :context
         defines :resource
+        defines :id
 
         # Returns string representation of URI.
         #
