@@ -2,11 +2,6 @@
 
 require 'studitemps/utils/uri'
 
-require 'studitemps/utils/uri/extensions/serialization'
-require 'studitemps/utils/uri/extensions/base64'
-require 'studitemps/utils/uri/extensions/aliases'
-require 'studitemps/utils/uri/extensions/string_equality'
-
 module Studitemps
   module Utils # rubocop:disable Metrics/ModuleLength
     RSpec.describe URI do
@@ -180,10 +175,17 @@ module Studitemps
           end
         end
 
-        context 'features' do
+        # Extensions require special files. Every extesion is loaded in a special `it` test so that we
+        # have not extensions until this point. This requires that we run all tests in order.
+        context 'extensions' do
           context 'de/serialization' do
             subject(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
             let(:uri) { klass.new(id: '<id>') }
+
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/serialization'
+              expect(result).to be true
+            end
 
             specify '.dump' do
               expect(klass.dump(uri)).to eq 'com.example:billing:invoice:<id>'
@@ -201,6 +203,11 @@ module Studitemps
 
             let(:encoded_uri) { 'Y29tLmV4YW1wbGU6YmlsbGluZzppbnZvaWNlOjxpZD4=' }
 
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/base64'
+              expect(result).to be true
+            end
+
             specify '#base64' do
               expect(uri.to_base64).to eq encoded_uri
             end
@@ -213,6 +220,11 @@ module Studitemps
           context 'aliased methods' do
             subject(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
+
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/aliases'
+              expect(result).to be true
+            end
 
             specify '#resource_type' do
               expect(uri.resource_type).to eq 'invoice'
@@ -227,15 +239,23 @@ module Studitemps
             subject(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
 
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/string_equality'
+              expect(result).to be true
+            end
+
             it { is_expected.to eq 'com.example:billing:invoice:<id>' }
             it { is_expected.to eql 'com.example:billing:invoice:<id>' }
           end
 
           context 'types' do
-            require 'studitemps/utils/uri/extensions/types'
-
             let(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
+
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/types'
+              expect(result).to be true
+            end
 
             describe 'Types Module' do
               let(:uri_type) { klass::Types::URI }
