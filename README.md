@@ -37,10 +37,11 @@ An Studitemps Utils URI references similar to a normal URI a specific resource. 
 of the time when used to reference a resource it also has a `context`, `resource`, and an `id`.
 
 Example: `com.example:billing:invoice:R422342`
-  - schema: `com.example` - Some kind of schema to make URI globally unique.
-  - context: `billing` - The context the URI (and the resource) belongs to.
-  - resource: `invoice` - The resource type.
-  - id: `R422342` - The resource id.
+
+-   schema: `com.example` - Some kind of schema to make URI globally unique.
+-   context: `billing` - The context the URI (and the resource) belongs to.
+-   resource: `invoice` - The resource type.
+-   id: `R422342` - The resource id.
 
 ### Usage
 
@@ -91,6 +92,7 @@ MyBaseURI.load('com.example:billing:invoice:R422342') # =>  #<MyBaseURI 'com.exa
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
+
 <!-- To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org). -->
 
 ## Contributing
