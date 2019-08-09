@@ -21,11 +21,15 @@ gem 'studitemps-utils'
 
 And then execute:
 
-    $ bundle
+```shell
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install studitemps-utils
+```shell
+$ gem install studitemps-utils
+```
 
 ## URI
 
@@ -33,10 +37,10 @@ An Studitemps Utils URI references similar to a normal URI a specific resource. 
 of the time when used to reference a resource it also has a `context`, `resource`, and an `id`.
 
 Example: `com.example:billing:invoice:R422342`
-- schema: `com.example` - Some kind of schema to make URI globally unique.
-- context: `billing` - The context the URI (and the resource) belongs to.
-- resource: `invoice` - The resource type.
-- id: `R422342` - The resource id.
+  - schema: `com.example` - Some kind of schema to make URI globally unique.
+  - context: `billing` - The context the URI (and the resource) belongs to.
+  - resource: `invoice` - The resource type.
+  - id: `R422342` - The resource id.
 
 ### Usage
 
@@ -91,7 +95,7 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/STUDITEMPS/studitemps-utils.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/STUDITEMPS/studitemps-utils>.
 
 ## License
 
