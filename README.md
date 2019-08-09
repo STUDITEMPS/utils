@@ -21,11 +21,15 @@ gem 'studitemps-utils'
 
 And then execute:
 
-    $ bundle
+```shell
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install studitemps-utils
+```shell
+$ gem install studitemps-utils
+```
 
 ## URI
 
@@ -33,10 +37,11 @@ An Studitemps Utils URI references similar to a normal URI a specific resource. 
 of the time when used to reference a resource it also has a `context`, `resource`, and an `id`.
 
 Example: `com.example:billing:invoice:R422342`
-- schema: `com.example` - Some kind of schema to make URI globally unique.
-- context: `billing` - The context the URI (and the resource) belongs to.
-- resource: `invoice` - The resource type.
-- id: `R422342` - The resource id.
+
+-   schema: `com.example` - Some kind of schema to make URI globally unique.
+-   context: `billing` - The context the URI (and the resource) belongs to.
+-   resource: `invoice` - The resource type.
+-   id: `R422342` - The resource id.
 
 ### Usage
 
@@ -52,6 +57,18 @@ uri.to_s # => 'com.example:billing:invoice:R422342'
 InvoiceURI.build('com.example:billing:invoice:R422342') # => #<InvoiceURI 'com.example:billing:invoice:R422342'>
 InvoiceURI.build(id: 'R422342') # => #<InvoiceURI 'com.example:billing:invoice:R422342'>
 InvoiceURI.build(uri) # => #<InvoiceURI 'com.example:billing:invoice:R422342'>
+
+# `resource` and `id` supports array so that `.build` will verify every value for a given string.
+# If we also want to check the initializer we can use the "types" extension to do so:
+require 'studitemps/utils/uri/extensions/types'
+
+InvoiceURI = Studitemps::Utils::URI.build(
+  schema: 'com.example', context: 'billing', resource: 'invoice', id: %w[final past_due]
+)
+
+InvoiceURI.build('com.example:billing:invoice:pro_forma') # => Studitemps::Utils::URI::Base::InvalidURI
+InvoiceURI.new(id: 'final') # => #<InvoiceURI 'com.example:billing:invoice:final'>
+InvoiceURI.new(id: 'pro_forma') # => Dry::Types::ConstraintError
 ```
 
 ### Extensions
@@ -75,11 +92,12 @@ MyBaseURI.load('com.example:billing:invoice:R422342') # =>  #<MyBaseURI 'com.exa
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
+
 <!-- To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org). -->
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/STUDITEMPS/studitemps-utils.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/STUDITEMPS/studitemps-utils>.
 
 ## License
 

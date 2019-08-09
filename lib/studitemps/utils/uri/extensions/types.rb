@@ -32,6 +32,54 @@ module Studitemps
             types.const_set 'String', Dry.Types.Constructor(klass) { |value| klass.build(value).to_s }
             klass.const_set 'Types', types
           }
+
+        end
+      end
+
+      ##
+      # Adds type checks to initializer arguments.
+      # `schema` and `context` values are checked and `resource` and `id` are checked against a possible list of
+      # values (enum if URI builder is provided with an array as the argument).
+      #
+      # @example
+      #   require 'studitemps/utils/uri/extensions/types'
+      #   InvoiceURI = Studitemps::Utils::URI.build(
+      #     schema: 'com.example', context: 'billing', resource: 'invoice', id: %w[final past_due]
+      #   )
+      #
+      #   InvoiceURI.new(id: 'final') # => #<InvoiceURI 'com.example:billing:invoice:final'>
+      #   InvoiceURI.new(id: 'pro_forma') # => Dry::Types::ConstraintError
+      #
+      # @since 0.2.0
+      class Builder
+        private
+
+        def schema_type(klass)
+          value_type(:schema, klass)
+        end
+
+        def context_type(klass)
+          value_type(:context, klass)
+        end
+
+        def resource_type(klass)
+          enum_type(:resource, klass)
+        end
+
+        def id_type(klass)
+          enum_type(:id, klass)
+        end
+
+        def value_type(value, klass, default: default_type)
+          return default unless klass.send(value)
+
+          Dry.Types::Value(klass.send(value))
+        end
+
+        def enum_type(value, klass, default: default_type)
+          return default unless klass.send(value)
+
+          Dry.Types::Strict::String.enum(*Array(klass.send(value)))
         end
       end
     end

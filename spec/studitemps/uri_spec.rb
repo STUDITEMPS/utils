@@ -2,12 +2,6 @@
 
 require 'studitemps/utils/uri'
 
-require 'studitemps/utils/uri/extensions/serialization'
-require 'studitemps/utils/uri/extensions/base64'
-require 'studitemps/utils/uri/extensions/aliases'
-require 'studitemps/utils/uri/extensions/string_equality'
-require 'studitemps/utils/uri/extensions/types'
-
 module Studitemps
   module Utils # rubocop:disable Metrics/ModuleLength
     RSpec.describe URI do
@@ -39,6 +33,11 @@ module Studitemps
           expect(klass.context).to eq 'billing'
           expect(klass.resource).to eq 'order'
         end
+
+        it 'for a list of IDs' do
+          klass = URI.build(schema: 'com.example', context: 'billing', resource: 'invoice', id: %w[final past_due])
+          expect(klass.id).to eq %w[final past_due]
+        end
       end
 
       describe 'URI regex' do
@@ -55,6 +54,24 @@ module Studitemps
           it { is_expected.to_not match 'com.example:some_context' }
           it { is_expected.to_not match 'com.example:invoice' }
           it { is_expected.to_not match 'com.example:billing:<some_id>' }
+        end
+
+        context 'specific resources' do
+          subject(:regex) {
+            URI.build(schema: 'com.example', context: 'billing', resource: %w[invoice invoice_duplicate])::REGEX
+          }
+
+          it { is_expected.to match 'com.example:billing:invoice:final' }
+          it { is_expected.to_not match 'com.example:billing:bill:final' }
+        end
+
+        context 'specific IDs' do
+          subject(:regex) {
+            URI.build(schema: 'com.example', context: 'billing', resource: 'invoice', id: %w[final past_due])::REGEX
+          }
+
+          it { is_expected.to match 'com.example:billing:invoice:final' }
+          it { is_expected.to_not match 'com.example:billing:invoice:pro_forma' }
         end
       end
 
@@ -158,10 +175,17 @@ module Studitemps
           end
         end
 
-        context 'features' do
+        # Extensions require special files. Every extesion is loaded in a special `it` test so that we
+        # have not extensions until this point. This requires that we run all tests in order.
+        context 'extensions' do
           context 'de/serialization' do
             subject(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
             let(:uri) { klass.new(id: '<id>') }
+
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/serialization'
+              expect(result).to be true
+            end
 
             specify '.dump' do
               expect(klass.dump(uri)).to eq 'com.example:billing:invoice:<id>'
@@ -179,6 +203,11 @@ module Studitemps
 
             let(:encoded_uri) { 'Y29tLmV4YW1wbGU6YmlsbGluZzppbnZvaWNlOjxpZD4=' }
 
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/base64'
+              expect(result).to be true
+            end
+
             specify '#base64' do
               expect(uri.to_base64).to eq encoded_uri
             end
@@ -191,6 +220,11 @@ module Studitemps
           context 'aliased methods' do
             subject(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
+
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/aliases'
+              expect(result).to be true
+            end
 
             specify '#resource_type' do
               expect(uri.resource_type).to eq 'invoice'
@@ -205,6 +239,11 @@ module Studitemps
             subject(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
 
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/string_equality'
+              expect(result).to be true
+            end
+
             it { is_expected.to eq 'com.example:billing:invoice:<id>' }
             it { is_expected.to eql 'com.example:billing:invoice:<id>' }
           end
@@ -212,6 +251,11 @@ module Studitemps
           context 'types' do
             let(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
+
+            it 'can require file' do
+              result = require 'studitemps/utils/uri/extensions/types'
+              expect(result).to be true
+            end
 
             describe 'Types Module' do
               let(:uri_type) { klass::Types::URI }
@@ -231,6 +275,48 @@ module Studitemps
                 expect {
                   string_type['something']
                 }.to raise_error ::Studitemps::Utils::URI::Base::InvalidURI
+              end
+            end
+
+            describe 'Attribute Types' do
+              subject(:klass) {
+                URI.build(
+                  schema: 'com.example',
+                  context: 'billing',
+                  resource: resources,
+                  id: ids
+                )
+              }
+              let(:uri) { klass.build('com.example:billing:invoice:final') }
+              let(:ids) { %w[final past_due] }
+              let(:resources) { %w[invoice invoice_duplicate] }
+
+              specify 'schema:' do
+                expect(klass.new(schema: 'com.example', id: 'final')).to eq uri
+                expect {
+                  klass.new(schema: 'com.examplee', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+              end
+
+              specify 'context:' do
+                expect(klass.new(context: 'billing', id: 'final')).to eq uri
+                expect {
+                  klass.new(context: 'billingg', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+              end
+
+              specify 'resource:' do
+                expect(klass.new(resource: 'invoice', id: 'final')).to eq uri
+                expect {
+                  klass.new(resource: 'bill', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+              end
+
+              specify 'id:' do
+                expect(klass.new(id: 'final')).to eq uri
+                expect {
+                  klass.new(id: 'pro_forma')
+                }.to raise_error Dry::Types::ConstraintError
               end
             end
           end
