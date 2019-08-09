@@ -16,6 +16,12 @@ module Studitemps
         defines :resource
         defines :id
 
+        # @!parse
+        #   # Regular expression which the string representation of the URI has to match.
+        #   #   `value` - matches the exact value
+        #   #   `enum` - matches any of the given values
+        #   REGEX = /\A(?<schema>`value`)\:(?<context>`value`)(:(?<resource>`enum`)(:(?<id>`enum`))?)?\z/
+
         # Returns string representation of URI.
         #
         # @example

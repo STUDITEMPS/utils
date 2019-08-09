@@ -52,6 +52,18 @@ uri.to_s # => 'com.example:billing:invoice:R422342'
 InvoiceURI.build('com.example:billing:invoice:R422342') # => #<InvoiceURI 'com.example:billing:invoice:R422342'>
 InvoiceURI.build(id: 'R422342') # => #<InvoiceURI 'com.example:billing:invoice:R422342'>
 InvoiceURI.build(uri) # => #<InvoiceURI 'com.example:billing:invoice:R422342'>
+
+# `resource` and `id` supports array so that `.build` will verify every value for a given string.
+# If we also want to check the initializer we can use the "types" extension to do so:
+require 'studitemps/utils/uri/extensions/types'
+
+InvoiceURI = Studitemps::Utils::URI.build(
+  schema: 'com.example', context: 'billing', resource: 'invoice', id: %w[final past_due]
+)
+
+InvoiceURI.build('com.example:billing:invoice:pro_forma') # => Studitemps::Utils::URI::Base::InvalidURI
+InvoiceURI.new(id: 'final') # => #<InvoiceURI 'com.example:billing:invoice:final'>
+InvoiceURI.new(id: 'pro_forma') # => Dry::Types::ConstraintError
 ```
 
 ### Extensions

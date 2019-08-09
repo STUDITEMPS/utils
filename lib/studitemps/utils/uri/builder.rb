@@ -15,7 +15,8 @@ module Studitemps
         #
         # @param [String, nil] schema the schema part of the new URI
         # @param [String, nil] context the context part of the new URI
-        # @param [String, nil] resource the resource part of the new URI
+        # @param [String, [String], nil] resource the resource part of the new URI
+        # @param [String, [String], nil] id the optional fixed id part of the new URI
         # @param [String] superclass uri base class
         # @return [Base] the new URI class
         #
