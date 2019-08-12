@@ -69,6 +69,14 @@ InvoiceURI = Studitemps::Utils::URI.build(
 InvoiceURI.build('com.example:billing:invoice:pro_forma') # => Studitemps::Utils::URI::Base::InvalidURI
 InvoiceURI.new(id: 'final') # => #<InvoiceURI 'com.example:billing:invoice:final'>
 InvoiceURI.new(id: 'pro_forma') # => Dry::Types::ConstraintError
+
+# instead of enums for resources we can also use different URIs with sum types.
+InvoiceDuplicateURI = Studitemps::Utils::URI.build(from: InvoiceURI, resource: 'invoice_duplicate')
+
+InvoicesType = InvoiceURI::Types::URI | InvoiceDuplicateURI::Types::URI
+InvoicesType[InvoiceURI.new(id: 'final')] # => <#InvoiceURI 'com.example:billing:invoice:final'>
+InvoicesType[InvoiceDuplicateURI.new(id: 'final')] # => <#InvoiceDuplicateURI 'com.example:billing:invoice:final'>
+InvoicesType[InvoiceURI.new(id: 'pro_forma')] # => Dry::Types::ConstraintError
 ```
 
 ### Extensions

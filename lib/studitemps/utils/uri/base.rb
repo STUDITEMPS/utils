@@ -6,7 +6,7 @@ module Studitemps
       # URI base class.
       # @abstract
       class Base
-        class InvalidURI < StandardError; end
+        class InvalidURI < ArgumentError; end
         extend Dry::Core::ClassAttributes
 
         include Dry::Equalizer(:schema, :context, :resource, :id)
