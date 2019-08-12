@@ -182,9 +182,8 @@ module Studitemps
             subject(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
             let(:uri) { klass.new(id: '<id>') }
 
-            it 'can require file' do
-              result = require 'studitemps/utils/uri/extensions/serialization'
-              expect(result).to be true
+            before do
+              require 'studitemps/utils/uri/extensions/serialization'
             end
 
             specify '.dump' do
@@ -203,9 +202,8 @@ module Studitemps
 
             let(:encoded_uri) { 'Y29tLmV4YW1wbGU6YmlsbGluZzppbnZvaWNlOjxpZD4=' }
 
-            it 'can require file' do
-              result = require 'studitemps/utils/uri/extensions/base64'
-              expect(result).to be true
+            before do
+              require 'studitemps/utils/uri/extensions/base64'
             end
 
             specify '#base64' do
@@ -221,9 +219,8 @@ module Studitemps
             subject(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
 
-            it 'can require file' do
-              result = require 'studitemps/utils/uri/extensions/aliases'
-              expect(result).to be true
+            before do
+              require 'studitemps/utils/uri/extensions/aliases'
             end
 
             specify '#resource_type' do
@@ -239,9 +236,8 @@ module Studitemps
             subject(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
 
-            it 'can require file' do
-              result = require 'studitemps/utils/uri/extensions/string_equality'
-              expect(result).to be true
+            before do
+              require 'studitemps/utils/uri/extensions/string_equality'
             end
 
             it { is_expected.to eq 'com.example:billing:invoice:<id>' }
