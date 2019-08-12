@@ -29,7 +29,7 @@ module Studitemps
           ::Studitemps::Utils::URI::Builder.extensions << -> (klass) {
             types = Module.new
             types.const_set 'URI', Dry.Types.Constructor(klass) { |value| klass.build(value) }
-            types.const_set 'String', Dry.Types.Constructor(klass) { |value| klass.build(value).to_s }
+            types.const_set 'String', Dry.Types.Constructor(String) { |value| klass.build(value).to_s }
             klass.const_set 'Types', types
           }
 

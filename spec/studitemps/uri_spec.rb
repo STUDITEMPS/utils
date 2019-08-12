@@ -252,9 +252,8 @@ module Studitemps
             let(:uri) { klass.new(id: '<id>') }
             let(:klass) { URI.build(schema: 'com.example', context: 'billing', resource: 'invoice') }
 
-            it 'can require file' do
-              result = require 'studitemps/utils/uri/extensions/types'
-              expect(result).to be true
+            before do
+              require 'studitemps/utils/uri/extensions/types'
             end
 
             describe 'Types Module' do
@@ -266,7 +265,7 @@ module Studitemps
                 expect(uri_type['com.example:billing:invoice:<id>']).to eq uri
                 expect {
                   uri_type['something']
-                }.to raise_error ::Studitemps::Utils::URI::Base::InvalidURI
+                }.to raise_error Dry::Types::CoercionError
               end
 
               it 'String' do
@@ -274,8 +273,39 @@ module Studitemps
                 expect(string_type['com.example:billing:invoice:<id>']).to eq uri.to_s
                 expect {
                   string_type['something']
-                }.to raise_error ::Studitemps::Utils::URI::Base::InvalidURI
+                }.to raise_error Dry::Types::CoercionError
               end
+
+              describe 'sum types' do
+                let(:invoice_klass) { URI.build(from: klass, resource: 'invoice') }
+                let(:invoice_duplicate_klass) { URI.build(from: klass, resource: 'invoice_duplicate') }
+
+                let(:invoice_uri) { invoice_klass.new(id: 'R42') }
+                let(:invoice_duplicate_uri) { invoice_duplicate_klass.new(id: 'RD42') }
+
+                it 'URI' do
+                  sum_type = invoice_klass::Types::URI | invoice_duplicate_klass::Types::URI
+                  expect(sum_type[invoice_uri]).to eq invoice_uri
+                  expect(sum_type[invoice_duplicate_uri]).to eq invoice_duplicate_uri
+                  expect(sum_type[invoice_uri.to_s]).to eq invoice_uri
+                  expect(sum_type[invoice_duplicate_uri.to_s]).to eq invoice_duplicate_uri
+                  expect {
+                    sum_type['com.example:billing:bill:B23']
+                  }.to raise_error Dry::Types::CoercionError
+                end
+
+                it 'String' do
+                  sum_type = invoice_klass::Types::String | invoice_duplicate_klass::Types::String
+                  expect(sum_type[invoice_uri]).to eq invoice_uri.to_s
+                  expect(sum_type[invoice_duplicate_uri]).to eq invoice_duplicate_uri.to_s
+                  expect(sum_type[invoice_uri.to_s]).to eq invoice_uri.to_s
+                  expect(sum_type[invoice_duplicate_uri.to_s]).to eq invoice_duplicate_uri.to_s
+                  expect {
+                    sum_type['com.example:billing:bill:B23']
+                  }.to raise_error Dry::Types::CoercionError
+                end
+              end
+
             end
 
             describe 'Attribute Types' do
