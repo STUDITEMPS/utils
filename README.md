@@ -105,7 +105,7 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at <https://github.com/STUDITEMPS/studitemps-utils>.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/STUDITEMPS/utils>.
 
 ## License
 
