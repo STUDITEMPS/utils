@@ -46,7 +46,11 @@ module Studitemps
             end
           end
 
+          # Included instance methods.
           module InstanceMethods
+            # Serializes URI to string.
+            #
+            # @return [String] serialized URI
             def serialize
               to_s
             end
