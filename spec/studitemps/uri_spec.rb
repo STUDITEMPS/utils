@@ -194,6 +194,10 @@ module Studitemps
               expect(klass.load(nil)).to be_nil
               expect(klass.load('com.example:billing:invoice:<id>')).to eq uri
             end
+
+            specify '#serialize' do
+              expect(uri.serialize).to eq 'com.example:billing:invoice:<id>'
+            end
           end
 
           context 'base64 encoding' do

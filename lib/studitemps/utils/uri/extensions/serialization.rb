@@ -32,7 +32,7 @@ module Studitemps
             # @param object [#to_s] URI to serialize
             # @return [String] string representation of the URI
             def dump(object)
-              object.to_s
+              object.serialize
             end
 
             # Returns new URI object from given string.
@@ -46,7 +46,18 @@ module Studitemps
             end
           end
 
+          # Included instance methods.
+          module InstanceMethods
+            # Serializes URI to string.
+            #
+            # @return [String] serialized URI
+            def serialize
+              to_s
+            end
+          end
+
           ::Studitemps::Utils::URI::Base.extend(ClassMethods)
+          ::Studitemps::Utils::URI::Base.include(InstanceMethods)
         end
       end
     end
