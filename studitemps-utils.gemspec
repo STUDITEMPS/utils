@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'dry-core', '~> 0.4'
-  spec.add_runtime_dependency 'dry-equalizer', '~> 0.2.2'
+  spec.add_runtime_dependency 'dry-equalizer', '~> 0.3.0'
   spec.add_runtime_dependency 'dry-initializer', '~> 3.0.0'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
