@@ -4,7 +4,7 @@ Shared utils for Studitemp's Ruby projects.
 
 ## Status
 
-[![CI](https://github.com/STUDITEMPS/utils/actions/workflows/ci.yml/badge.svg)](https://github.com/STUDITEMPS/utils)
+[![ruby](https://github.com/STUDITEMPS/utils/actions/workflows/ruby.yml/badge.svg)](https://github.com/STUDITEMPS/utils)
 [![codecov](https://codecov.io/gh/STUDITEMPS/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/STUDITEMPS/utils)
 [![Depfu](https://badges.depfu.com/badges/e51585798b0326748e63f90a5e382273/overview.svg)](https://depfu.com/github/STUDITEMPS/utils?project_id=8647)
 [![Maintainability](https://api.codeclimate.com/v1/badges/1b9ea1edfa6c800175ec/maintainability)](https://codeclimate.com/github/STUDITEMPS/utils/maintainability)
