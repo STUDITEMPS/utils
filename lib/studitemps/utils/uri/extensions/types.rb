@@ -67,7 +67,18 @@ module Studitemps
         end
 
         def id_type(klass)
-          enum_type(:id, klass)
+          type_for(:id, klass)
+        end
+
+        def type_for(attribute, klass)
+          value = klass.send(attribute)
+          case value
+          when Array then enum_type(attribute, klass)
+          when String, Symbol then value_type(attribute, klass)
+          when Regexp then regexp_type(value)
+          else
+            default_type
+          end
         end
 
         def value_type(value, klass, default: default_type)
@@ -80,6 +91,10 @@ module Studitemps
           return default unless klass.send(value)
 
           Dry.Types::Strict::String.enum(*Array(klass.send(value)))
+        end
+
+        def regexp_type(regex)
+          Dry.Types::Strict::String.constrained(format: regex)
         end
       end
     end
