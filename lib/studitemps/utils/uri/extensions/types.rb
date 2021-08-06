@@ -39,7 +39,7 @@ module Studitemps
       ##
       # Adds type checks to initializer arguments.
       # `schema` and `context` values are checked and `resource` and `id` are checked against a possible list of
-      # values (enum if URI builder is provided with an array as the argument).
+      # values (enum if URI builder is provided with an array as the argument). `id` also supports regular expressions.
       #
       # @example
       #   require 'studitemps/utils/uri/extensions/types'
@@ -55,46 +55,47 @@ module Studitemps
         private
 
         def schema_type(klass)
-          value_type(:schema, klass)
+          value_type(klass.schema)
         end
 
         def context_type(klass)
-          value_type(:context, klass)
+          value_type(klass.context)
         end
 
         def resource_type(klass)
-          enum_type(:resource, klass)
+          enum_type(klass.resource)
         end
 
         def id_type(klass)
-          type_for(:id, klass)
+          dynamic_type(klass.id)
         end
 
-        def type_for(attribute, klass)
-          value = klass.send(attribute)
+        def dynamic_type(value)
           case value
-          when Array then enum_type(attribute, klass)
-          when String, Symbol then value_type(attribute, klass)
+          when Array then enum_type(value)
+          when String, Symbol then value_type(value)
           when Regexp then regexp_type(value)
           else
             default_type
           end
         end
 
-        def value_type(value, klass, default: default_type)
-          return default unless klass.send(value)
+        def value_type(value)
+          return default_type unless value
 
-          Dry.Types::Value(klass.send(value))
+          Dry.Types::Value(value)
         end
 
-        def enum_type(value, klass, default: default_type)
-          return default unless klass.send(value)
+        def enum_type(value)
+          return default_type unless value
 
-          Dry.Types::Strict::String.enum(*Array(klass.send(value)))
+          Dry.Types::Strict::String.enum(*Array(value))
         end
 
-        def regexp_type(regex)
-          Dry.Types::Strict::String.constrained(format: regex)
+        def regexp_type(value)
+          return default_type unless value
+
+          Dry.Types::Strict::String.constrained(format: value)
         end
       end
     end
