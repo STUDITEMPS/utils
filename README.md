@@ -84,6 +84,15 @@ InvoiceRegexURI = Studitemps::Utils::URI.build(from: InvoiceURI, id: /I-\d{3}/)
 InvoiceRegexURI.build('com.example:billing:invoice:pro_forma') # => Studitemps::Utils::URI::Base::InvalidURI
 InvoiceRegexURI.new(id: 'I-123') # => #<InvoiceRegexURI 'com.example:billing:invoice:I-123'>
 InvoiceRegexURI.new(id: 'pro_forma') # => Dry::Types::ConstraintError
+
+# types are also supported
+itype = Dry.Types::Coercible::Integer.constrained(gteq: 1000)
+InvoiceTypeURI = Studitemps::Utils::URI.build(from: InvoiceURI, id: itype)
+
+InvoiceTypeURI.build('com.example:billing:invoice:pro_forma') # => Sry::Types::CoercionError
+InvoiceTypeURI.new(id: '1042') # => #<InvoiceTypeURI 'com.example:billing:invoice:1024'>
+InvoiceTypeURI.new(id: 'pro_forma') # => Dry::Types::ConstraintError
+
 ```
 
 ### Extensions

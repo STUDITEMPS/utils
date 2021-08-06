@@ -445,11 +445,66 @@ module Studitemps
                 }.to raise_error Dry::Types::CoercionError
               end
             end
+
+            describe 'Type' do
+              let(:invoice_number_type) { Dry.Types::Coercible::Integer.constrained(gteq: 1000) }
+              let(:invoice_klass) { URI.build(from: klass, resource: 'invoice', id: invoice_number_type) }
+
+              it 'validates input' do
+                expect {
+                  invoice_klass.new(id: '1042')
+                }.to_not raise_error
+
+                expect {
+                  invoice_klass.new(id: '23')
+                }.to raise_error Dry::Types::ConstraintError
+              end
+
+              it 'has uri type' do
+                type = invoice_klass::Types::URI
+                uri = invoice_klass.new(id: '1042')
+
+                expect(type[uri]).to eq uri
+                expect(type['com.example:billing:invoice:1042']).to eq uri
+                expect {
+                  type['com.example:billing:invoice:0023']
+                }.to raise_error Dry::Types::CoercionError
+              end
+
+              it 'hase string type' do
+                type = invoice_klass::Types::String
+                uri = invoice_klass.new(id: '1042')
+
+                expect(type[uri]).to eq uri.to_s
+                expect(type['com.example:billing:invoice:1042']).to eq uri.to_s
+                expect {
+                  type['com.example:billing:invoice:0023']
+                }.to raise_error Dry::Types::CoercionError
+              end
+
+              it 'has fallback regex' do
+                regex = invoice_klass::REGEX
+
+                expect(regex).to match 'com.example:billing:invoice:abc'
+                expect(regex).to match 'com.example:billing:invoice:123'
+                expect(regex).to match 'com.example:billing:invoice:123123'
+                expect(regex).to match 'com.example:billing:invoice:'
+                expect(regex).to_not match 'com.example:billing:invoicX:abc'
+              end
+
+              it 'can be build from string' do
+                uri = invoice_klass.new(id: '1042')
+
+                expect(invoice_klass.build('com.example:billing:invoice:1042')).to eq uri
+
+                expect {
+                  invoice_klass.build('com.example:billing:invoice:23')
+                }.to raise_error Dry::Types::ConstraintError
+              end
+            end
           end
         end
       end
     end
   end
 end
-
-
