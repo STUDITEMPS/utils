@@ -34,9 +34,19 @@ module Studitemps
           expect(klass.resource).to eq 'order'
         end
 
+        it 'for single ID' do
+          klass = URI.build(schema: 'com.example', context: 'billing', resource: 'invoice', id: 'final')
+          expect(klass.id).to eq 'final'
+        end
+
         it 'for a list of IDs' do
           klass = URI.build(schema: 'com.example', context: 'billing', resource: 'invoice', id: %w[final past_due])
           expect(klass.id).to eq %w[final past_due]
+        end
+
+        it 'for regex' do
+          klass = URI.build(schema: 'com.example', context: 'billing', resource: 'invoice', id: /I-\d{3}/)
+          expect(klass.id).to eq(/I-\d{3}/)
         end
       end
 
@@ -72,6 +82,18 @@ module Studitemps
 
           it { is_expected.to match 'com.example:billing:invoice:final' }
           it { is_expected.to_not match 'com.example:billing:invoice:pro_forma' }
+        end
+
+        context 'custom regex' do
+          subject(:regex) {
+            URI.build(schema: 'com.example', context: 'billing', resource: 'invoice', id: /I-\d{3}/)::REGEX
+          }
+
+          it { is_expected.to match 'com.example:billing:invoice:I-123' }
+          it { is_expected.to_not match 'com.example:billing:invoice:i-123' }
+          it { is_expected.to_not match 'com.example:billing:invoice:123' }
+          it { is_expected.to_not match 'com.example:billing:invoice:I-abc' }
+          it { is_expected.to_not match 'com.example:billing:invoice:I-1234' }
         end
       end
 
@@ -308,6 +330,44 @@ module Studitemps
 
             end
 
+            describe 'Fixed URI' do
+              subject(:klass) {
+                URI.build(
+                  schema: 'com.example',
+                  context: 'billing',
+                  resource: 'invoice',
+                  id: 'final'
+                )
+              }
+
+              it 'only accepts fixed URI' do
+                uri = klass.new(
+                  schema: 'com.example',
+                  context: 'billing',
+                  resource: 'invoice',
+                  id: 'final'
+                )
+
+                expect(klass.new(id: 'final')).to eq uri
+
+                expect {
+                  klass.new(id: 'not_final')
+                }.to raise_error Dry::Types::ConstraintError
+
+                expect {
+                  klass.new(resource: 'not_invoice', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+
+                expect {
+                  klass.new(context: 'not_billing', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+
+                expect {
+                  klass.new(schema: 'not_example.com', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+              end
+            end
+
             describe 'Attribute Types' do
               subject(:klass) {
                 URI.build(
@@ -347,6 +407,42 @@ module Studitemps
                 expect {
                   klass.new(id: 'pro_forma')
                 }.to raise_error Dry::Types::ConstraintError
+              end
+            end
+
+            describe 'Regexp' do
+              let(:invoice_klass) { URI.build(from: klass, resource: 'invoice', id: /I-\d{3}/) }
+
+              it 'validates input' do
+                expect {
+                  invoice_klass.new(id: 'I-123')
+                }.to_not raise_error
+
+                expect {
+                  invoice_klass.new(id: 'X-123')
+                }.to raise_error Dry::Types::ConstraintError
+              end
+
+              it 'has uri type' do
+                type = invoice_klass::Types::URI
+                uri = invoice_klass.new(id: 'I-123')
+
+                expect(type[uri]).to eq uri
+                expect(type['com.example:billing:invoice:I-123']).to eq uri
+                expect {
+                  type['com.example:billing:invoice:<other>']
+                }.to raise_error Dry::Types::CoercionError
+              end
+
+              it 'has string type' do
+                type = invoice_klass::Types::String
+                uri = invoice_klass.new(id: 'I-123')
+
+                expect(type[uri]).to eq uri.to_s
+                expect(type['com.example:billing:invoice:I-123']).to eq uri.to_s
+                expect {
+                  type['com.example:billing:invoice:<other>']
+                }.to raise_error Dry::Types::CoercionError
               end
             end
           end

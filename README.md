@@ -77,6 +77,13 @@ InvoicesType = InvoiceURI::Types::URI | InvoiceDuplicateURI::Types::URI
 InvoicesType[InvoiceURI.new(id: 'final')] # => <#InvoiceURI 'com.example:billing:invoice:final'>
 InvoicesType[InvoiceDuplicateURI.new(id: 'final')] # => <#InvoiceDuplicateURI 'com.example:billing:invoice:final'>
 InvoicesType[InvoiceURI.new(id: 'pro_forma')] # => Dry::Types::ConstraintError
+
+# regular expressions for `id` are also supported
+InvoiceRegexURI = Studitemps::Utils::URI.build(from: InvoiceURI, id: /I-\d{3}/)
+
+InvoiceRegexURI.build('com.example:billing:invoice:pro_forma') # => Studitemps::Utils::URI::Base::InvalidURI
+InvoiceRegexURI.new(id: 'I-123') # => #<InvoiceRegexURI 'com.example:billing:invoice:I-123'>
+InvoiceRegexURI.new(id: 'pro_forma') # => Dry::Types::ConstraintError
 ```
 
 ### Extensions

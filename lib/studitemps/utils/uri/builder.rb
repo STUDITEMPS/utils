@@ -79,10 +79,11 @@ module Studitemps
         end
 
         def enum_regex(value, klass, default: '[\w\-_]+')
-          return default unless klass.send(value)
+          return default unless (values = klass.send(value))
+          return values if values.is_a? Regexp
 
-          values = Array(klass.send(value)).map { |v| Regexp.escape(v) }
-          "(#{values.join('|')})"
+          escaped_values = Array(values).map { |v| Regexp.escape(v) }
+          "(#{escaped_values.join('|')})"
         end
 
         def default_type

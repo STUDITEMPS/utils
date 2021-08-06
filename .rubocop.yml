@@ -2,28 +2,27 @@
 # require: rubocop-performance
 
 AllCops:
-  TargetRubyVersion: 2.5
-  Exclude:
-    - db/schema.rb
+  TargetRubyVersion: 2.6
+  NewCops: enable
 
-CaseIndentation:
+Layout/CaseIndentation:
   EnforcedStyle: end
 
-CollectionMethods:
+Style/CollectionMethods:
   PreferredMethods:
     reduce: inject
     inject: inject
 
-Lambda:
+Style/Lambda:
   Enabled: false
 
-Layout/AlignArguments:
+Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedLastArgumentHashStyle: ignore_implicit
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 
 Layout/EmptyLinesAroundBlockBody:
@@ -35,7 +34,7 @@ Layout/EmptyLinesAroundClassBody:
 Layout/EmptyLinesAroundModuleBody:
   Enabled: false
 
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
 Layout/MultilineOperationIndentation:
@@ -50,13 +49,13 @@ Layout/SpaceInLambdaLiteral:
 Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
 
-MethodLength:
+Metrics/MethodLength:
   Max: 24
 
 Metrics/BlockLength:
-  ExcludedMethods: [it, describe, context, feature, freeze, specify, define, renum]
+  IgnoredMethods: [it, describe, context, feature, freeze, specify, define, renum]
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 Style/AndOr:
@@ -71,5 +70,5 @@ Style/Documentation:
 Style/EachWithObject:
   Enabled: false
 
-TrailingBlankLines:
+Layout/TrailingEmptyLines:
   Enabled: false
