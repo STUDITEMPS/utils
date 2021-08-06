@@ -34,6 +34,11 @@ module Studitemps
           expect(klass.resource).to eq 'order'
         end
 
+        it 'for single ID' do
+          klass = URI.build(schema: 'com.example', context: 'billing', resource: 'invoice', id: 'final')
+          expect(klass.id).to eq 'final'
+        end
+
         it 'for a list of IDs' do
           klass = URI.build(schema: 'com.example', context: 'billing', resource: 'invoice', id: %w[final past_due])
           expect(klass.id).to eq %w[final past_due]
@@ -323,6 +328,44 @@ module Studitemps
                 end
               end
 
+            end
+
+            describe 'Fixed URI' do
+              subject(:klass) {
+                URI.build(
+                  schema: 'com.example',
+                  context: 'billing',
+                  resource: 'invoice',
+                  id: 'final'
+                )
+              }
+
+              it 'only accepts fixed URI' do
+                uri = klass.new(
+                  schema: 'com.example',
+                  context: 'billing',
+                  resource: 'invoice',
+                  id: 'final'
+                )
+
+                expect(klass.new(id: 'final')).to eq uri
+
+                expect {
+                  klass.new(id: 'not_final')
+                }.to raise_error Dry::Types::ConstraintError
+
+                expect {
+                  klass.new(resource: 'not_invoice', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+
+                expect {
+                  klass.new(context: 'not_billing', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+
+                expect {
+                  klass.new(schema: 'not_example.com', id: 'final')
+                }.to raise_error Dry::Types::ConstraintError
+              end
             end
 
             describe 'Attribute Types' do
