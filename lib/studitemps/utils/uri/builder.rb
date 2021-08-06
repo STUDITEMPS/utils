@@ -81,6 +81,7 @@ module Studitemps
         def enum_regex(value, klass, default: '[\w\-_]+')
           return default unless (values = klass.send(value))
           return values if values.is_a? Regexp
+          return '.*' if defined?(Dry::Types::Type) && values.is_a?(Dry::Types::Type)
 
           escaped_values = Array(values).map { |v| Regexp.escape(v) }
           "(#{escaped_values.join('|')})"

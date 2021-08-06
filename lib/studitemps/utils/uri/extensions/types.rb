@@ -75,6 +75,7 @@ module Studitemps
           when Array then enum_type(value)
           when String, Symbol then value_type(value)
           when Regexp then regexp_type(value)
+          when Dry::Types::Type then value
           else
             default_type
           end
