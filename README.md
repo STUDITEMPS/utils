@@ -93,6 +93,15 @@ InvoiceTypeURI.build('com.example:billing:invoice:pro_forma') # => Sry::Types::C
 InvoiceTypeURI.new(id: '1042') # => #<InvoiceTypeURI 'com.example:billing:invoice:1024'>
 InvoiceTypeURI.new(id: 'pro_forma') # => Dry::Types::ConstraintError
 
+# and this can be used in sum types to coerce *distinct* IDs to the correct URI
+ltype = Dry.Types::Coercible::Integer.constrained(lt: 1000)
+LegacyInvoiceTypeURI = Studitemps::Utils::URI.build(from: InvoiceURI, context: 'legacy_invoice', id: ltype)
+
+InvoiceSumType = InvoiceTypeURI::Types::URI | LegacyInvoiceTypeURI::Types::URI
+
+InvoiceSumType[id: 23] # => #<LegacyInvoiceTypeURI 'com.example:legacy_invoice:invoice:23'>
+InvoiceSumType[id: 1023] # => #<InvoiceTypeURI 'com.example:billing:invoice:1023'>
+InvoiceSumType[id: 'x'] # => Dry::Types::CoercionError
 ```
 
 ### Extensions
