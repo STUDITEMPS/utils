@@ -499,7 +499,23 @@ module Studitemps
 
                 expect {
                   invoice_klass.build('com.example:billing:invoice:23')
-                }.to raise_error Dry::Types::ConstraintError
+                }.to raise_error Studitemps::Utils::URI::Base::InvalidURI
+              end
+
+              it 'supports sum types' do
+                legacy_invoice_number_type = Dry.Types::Coercible::Integer.constrained(lt: 1000)
+                legacy_invoice_klass = URI.build(
+                  from: klass, resource: 'legacy_invoice', id: legacy_invoice_number_type
+                )
+
+                sum_type = legacy_invoice_klass::Types::URI | invoice_klass::Types::URI
+
+                expect(sum_type[id: 23]).to eq legacy_invoice_klass.new(id: 23)
+                expect(sum_type[id: 1023]).to eq invoice_klass.new(id: 1023)
+
+                expect {
+                  sum_type[id: '<invalid>']
+                }.to raise_error Dry::Types::CoercionError
               end
             end
           end

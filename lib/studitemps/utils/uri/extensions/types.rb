@@ -26,11 +26,21 @@ module Studitemps
         #     URI = ::MyURI::Types::URI
         #   end
         module Types
+          module RescueConstraintError
+            def build(*_args, **_kwargs, &_block)
+              super
+            rescue Dry::Types::ConstraintError => e
+              raise Studitemps::Utils::URI::Base::InvalidURI, e
+            end
+          end
+
           ::Studitemps::Utils::URI::Builder.extensions << -> (klass) {
             types = Module.new
             types.const_set 'URI', Dry.Types.Constructor(klass) { |value| klass.build(value) }
             types.const_set 'String', Dry.Types.Constructor(String) { |value| klass.build(value).to_s }
             klass.const_set 'Types', types
+
+            klass.extend(RescueConstraintError)
           }
 
         end
