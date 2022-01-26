@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    studitemps-utils (0.5.0)
+    studitemps-utils (0.5.1)
       dry-core (~> 0.4)
       dry-equalizer (~> 0.3.0)
       dry-initializer (~> 3.1.1)
