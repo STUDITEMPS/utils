@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'dry-core', '~> 1.0'
   spec.add_runtime_dependency 'dry-equalizer', '~> 0.3.0'
-  spec.add_runtime_dependency 'dry-initializer', '~> 3.1.1'
+  spec.add_runtime_dependency 'dry-initializer', '~> 3.2.0'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 13.0'
